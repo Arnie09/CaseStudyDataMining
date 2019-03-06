@@ -20,7 +20,7 @@ dataset1.set_index(' ROLL NO. ',inplace  = True)
 dataset2.set_index(' ROLL NO. ',inplace  = True)
 dataset3.set_index(' ROLL NO. ',inplace  = True)
 dataset4.set_index(' ROLL NO. ',inplace  = True)
-dataset5.set_index('ROLL NO.',inplace  = True) 
+dataset5.set_index('ROLL NO.',inplace  = True)
 
 '''dropping unnecessary headers'''
 dataset1  = dataset1.drop(columns = ['Unnamed: 0',' SGPA1 ', ' SGPA2 ',' YGPA ', ' DGPA ', ' RESULT '])
@@ -58,31 +58,32 @@ subjectsfordataframe = list(dataset1.columns.values)+list(dataset2.columns.value
 print(len(subjects))
 
 
-# data = [{'b': 2, 'c':3}, {'a': 10, 'b': 20, 'c': 30}] 
-  
-# # Creates padas DataFrame by passing  
-# # Lists of dictionaries and row index. 
-# df = pd.DataFrame(data, index =['first', 'second']) 
+# data = [{'b': 2, 'c':3}, {'a': 10, 'b': 20, 'c': 30}]
+
+# # Creates padas DataFrame by passing
+# # Lists of dictionaries and row index.
+# df = pd.DataFrame(data, index =['first', 'second'])
 data = {}
 rollNo = list(listOfDataFrames[0].index)
 
 #print(listOfDataFrames[0].loc[rollNo[0]]['CS201'])
 for students in rollNo:
-    try: 
+    try:
         #print(students)
         marks = []
         for i in range(0,5):
-            
+
             for subjects in subjectslist[i]:
                 #print(subjects," ",listOfDataFrames[i].loc[students][subjects],end = " ")
                 marks.append(listOfDataFrames[i].loc[students][subjects])
         data[students] = marks
     except:
-        continue        
-            
-            
+        continue
+
+
 # for i in data:
 #     print(i," : ",data[i])
 
 DATAFRAME = pd.DataFrame.from_dict(data,orient = "index",columns = subjectsfordataframe)
+DATAFRAME.index.name = "RollNo."
 DATAFRAME.to_csv(os.path.join(sys.path[0],"MainData.csv"))
