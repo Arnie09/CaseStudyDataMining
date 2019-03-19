@@ -25,7 +25,6 @@ for i in df.index:
         score="Average Attendance"
     else:
         score="Bad Attendance"
-    
     data['% of Attendance till 31.03.2017'].append(score)
 
     marks=df.loc[i]['UT_MAX (15)']
@@ -58,5 +57,3 @@ for i in df.index:
     data['Total (30).1'].append(score)
 
 DF=pd.DataFrame.from_dict(data)
-DF.index.name="RollNo."
-DF.to_excel(os.path.join(sys.path[0],"MainData.xlsx"))
