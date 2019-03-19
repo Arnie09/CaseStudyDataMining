@@ -9,9 +9,11 @@ dataFrame.set_index('RollNo.',inplace  = True)
 MAIN_LIST={}
 SUBJECTS = list(dataFrame.columns)
 
+'''filling up the dictionary with empty lists'''
 for students in dataFrame.index:
     MAIN_LIST[students] = []
 
+'''grouping of marks into good,average,poor based on the higest and lowest in the subjects is done here'''
 for subjects in SUBJECTS:
     marks = sorted(dataFrame[subjects])
     min,max = marks[0], marks[len(marks)-1]
@@ -33,7 +35,8 @@ df = pd.DataFrame.from_dict(MAIN_LIST,orient = "index",columns = SUBJECTS)
 df.index.name = "Roll No"
 df.to_excel(os.path.join(sys.path[0],'ProcessedData.xlsx'))
 
-print(MAIN_LIST)
+'''old technique where we decided the good,average and poor'''
+# print(MAIN_LIST)
 # for students in dataFrame.index:
 #     scores = []
 #     for subject in SUBJECTS:
