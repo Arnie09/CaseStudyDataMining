@@ -26,6 +26,7 @@ class FP_Tree:
         self.labelcount=0
         self.freqItems=[]
         self.dataSet={}
+        self.rulesMainDict = {}#added this to store rules
 
         if(kwargs.get('address') is not None):
             self.initialiseData(kwargs.get('address'),kwargs.get('TransID'),kwargs.get('ProductCode'))
@@ -150,7 +151,9 @@ class FP_Tree:
         for i in ordereditems:
             print(i)
 
-    def displayRules(self,conf=0.8):
+    '''over here im adding a list where our rules will be stored so that driver can read the rules from its own domain'''
+
+    def displayRules(self,confmin=0.8,confmax = 0.9):
         suppdata={}
         rules=[]
         k=list(self.mainHeadertable.keys())
@@ -176,9 +179,10 @@ class FP_Tree:
                     supS=suppdata[subset]
 
                     confidence=supL/supS
-                    if confidence>=conf:
+                    if confidence>=confmin and confidence<=confmax:
                         rule=(str(S),str(LminusS),confidence*100)
-                        print(rule[0],'=>',rule[1],":",str(round(rule[2]))+"%")
+                        self.rulesMainDict[rule[0]] = rule[1]+":"+str(round(rule[2]))
+                        #print(rule[0],'=>',rule[1],":",str(round(rule[2]))+"%")
 
 
 
@@ -189,8 +193,8 @@ class FP_Tree:
 
 
 
-"""
 
-obj=FP_Tree(address=r"E:\Projects\machine Learning\Book1.xlsx",TransID='InvoiceNo',ProductCode='StockCode',min=5)#address,TransID,ProductCode,minSup):
+
+obj=FP_Tree(address=r"F:\LetsCode\Machine learning\Book1.xlsx",TransID='InvoiceNo',ProductCode='StockCode',min=5)#address,TransID,ProductCode,minSup):
 #obj.display()
-obj.displayRules()"""
+obj.displayRules()
