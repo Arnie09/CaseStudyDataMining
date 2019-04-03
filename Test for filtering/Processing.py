@@ -51,15 +51,3 @@ df.to_excel(os.path.join(sys.path[0],'ProcessedData.xlsx'))
 #             String = "Poor marks in "
 #         scores.append((String+subject))
 #     MAIN_LIST[students] = scores
-
-FptreeObject = FP_Tree(min = 10,transactions = MAIN_LIST)
-FptreeObject.displayRules(confmin=0.0,confmax = 0.5)
-rules = FptreeObject.rulesMainDict
-for rule in  rules:
-    #print((rule))
-    if('Computer Organisation' in rule and 'Computer Architecture' in rule and rule.count(',') == 1):
-        print(rule+" : "+rules[rule])
-    # for elements in rule:
-    #     print(elements)
-    #     if ('Computer Organisation' in elements):
-    #         print(rule+":"+rules[rule])
