@@ -195,6 +195,6 @@ class FP_Tree:
 
 
 
-obj=FP_Tree(address=r"F:\LetsCode\Machine learning\Book1.xlsx",TransID='InvoiceNo',ProductCode='StockCode',min=5)#address,TransID,ProductCode,minSup):
-#obj.display()
-obj.displayRules()
+# obj=FP_Tree(address=r"F:\LetsCode\Machine learning\Book1.xlsx",TransID='InvoiceNo',ProductCode='StockCode',min=5)#address,TransID,ProductCode,minSup):
+# #obj.display()
+# obj.displayRules()
