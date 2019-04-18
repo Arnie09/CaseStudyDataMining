@@ -6,7 +6,6 @@ import openpyxl
 import re
 
 #loading function
-from  FP_Growth import FP_Tree
 from Apriori_core import apriori
 
 #loading dataSet
@@ -73,7 +72,6 @@ for items in AprioriObject.finalRules:
                     relations[subjects_in_this_rule].append(main_stuff)
 
 for subjects in relations:
-    print(subjects)
     if(len(relations[subjects])>2):
         for items in relations[subjects]:
             print(items)
