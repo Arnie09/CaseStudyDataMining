@@ -3,6 +3,7 @@ import pandas as pd
 import os
 import sys
 import openpyxl
+import re
 
 #loading function
 from  FP_Growth import FP_Tree
@@ -23,42 +24,57 @@ for items in subjects:
     subjects_to_be_analysed.append('Good marks in '+items)
     subjects_to_be_analysed.append('Average marks in '+items)
     subjects_to_be_analysed.append('Poor marks in '+items)
-#subjects_to_be_analysed = ['Good marks in Data Structure & Algorithm','Good marks in Design & Analysis of Algorithm','Good marks in Object Oriented Programming']
+
 
 for index in dataset.index:
     MAIN_LIST[index] = []
-    # MAIN_LIST[index].append(dataset.loc[index]['Data Structure & Algorithm'])
-    # MAIN_LIST[index].append(dataset.loc[index]['Design & Analysis of Algorithm'])
-    # MAIN_LIST[index].append(dataset.loc[index]['Object Oriented Programming'])
-    # MAIN_LIST[index].append(dataset.loc[index]['Introduction to Computing'])
     for each_subjects in subjects:
         MAIN_LIST[index].append(dataset.loc[index][each_subjects])
 
-    #MAIN_LIST[index].append(dataset.loc[index]['Introduction to Computing'])
-    # MAIN_LIST[index].append(dataset.loc[index]['Analog & Digital Electronics'])
-    # MAIN_LIST[index].append(dataset.loc[index]['Computer Organisation'])
-    # MAIN_LIST[index].append(dataset.loc[index]['Numerical Methods'])
-    # MAIN_LIST[index].append(dataset.loc[index]['Communication Engg & Coding Theory'])
-    # MAIN_LIST[index].append(dataset.loc[index]['Formal Language & Automata Theory'])
 
-# for index in dataset.index:
-#     MAIN_LIST[index] = []
-#     for each_subjects in subjects:
-#         MAIN_LIST[index].append(dataset.loc[index][each_subjects])
+AprioriObject = apriori(min = 15,transactions = MAIN_LIST,productlist = subjects_to_be_analysed,rulesMin = 0.1,rules_len = 3)
 
-# print(dataset.loc[10900113101]['Numerical Methods'])
-# FptreeObject = FP_Tree(min = 1,transactions = MAIN_LIST)
-# FptreeObject.displayRules(confmin=0.0,confmax = 1.0)
-# rules = FptreeObject.rulesMainDict
-# for rule in  rules:
-#     if('Data Structure & Algorithm' in rule and 'Design & Analysis of Algorithm' in rule and 'Object Oriented Programming' in rules[rule] and rule.count(',') == 1 and rules[rule].count(',') == 0):
-#         print(rule+" : "+rules[rule])
+PATTERNS = ["Good marks in ","Average marks in ","Poor marks in "]
 
-AprioriObject = apriori(min = 15,transactions = MAIN_LIST,productlist = subjects_to_be_analysed,rulesMin = 0.1)
+relations = {}
 
 for items in AprioriObject.finalRules:
     if(items == 3):
         for rules in AprioriObject.finalRules[items]:
+            #print(rules)
+            main_stuff = rules
+            rules,percentage = rules.split(": ")
             left_part,right_part = rules.split('=>')
-            if('Data Structure & Algorithm' in left_part and 'Design & Analysis of Algorithm' in left_part and 'Object Oriented Programming' in right_part):
-                print(rules)
+            left_part = left_part[1:-1]
+            right_part = right_part[1:-1]
+            left_part = left_part.split(", ")
+            right_part = right_part.split(", ")
+            left_subjects = []
+            right_subjects = []
+            #print(left_part,right_part)
+            for items_ in left_part:
+                for pattern in PATTERNS:
+                    if(re.search(pattern,items_)):
+                        left_subjects.append(items_.replace(pattern,""))
+            for items_ in right_part:
+                for pattern in PATTERNS:
+                    if(re.search(pattern,items_)):
+                        right_subjects.append(items_.replace(pattern,""))
+
+
+            subjects_in_this_rule = tuple(sorted([subject for subject in left_subjects]+[subject for subject in right_subjects]))
+
+            #print(subjects_in_this_rule)
+            if(float(percentage[:-1])>90):
+                if(subjects_in_this_rule not in relations):
+                    #print("The relations between :",subjects_in_this_rule," are --- ")
+                    relations[subjects_in_this_rule] = [main_stuff]
+                else:
+                    relations[subjects_in_this_rule].append(main_stuff)
+
+for subjects in relations:
+    print(subjects)
+    if(len(relations[subjects])>2):
+        for items in relations[subjects]:
+            print(items)
+        print()

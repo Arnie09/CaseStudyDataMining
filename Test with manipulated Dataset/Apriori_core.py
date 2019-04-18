@@ -4,10 +4,10 @@ class apriori:
 
     def __init__(self,**kwargs):
 
-        # if(kwargs.get('rules_len') is not None):
-        #     self.rulesLength = kwargs.get('rules_len')
-        # else:
-        #     self.rulesLength = 999
+        if(kwargs.get('rules_len') is not None):
+            self.rulesLength = kwargs.get('rules_len')
+        else:
+            self.rulesLength = 999
         self.min=kwargs.get('min')
         self.rulesMin = kwargs.get('rulesMin')
         if(kwargs.get('address') is not None):
@@ -67,8 +67,7 @@ class apriori:
         List=self.allLs[1]
         a=1
 
-        while(len(List)!= 0):
-            #if(a<=self.rulesLength):
+        while(len(List)!= 0 and a<=self.rulesLength):
             a+=1
             List=self.createList(List,a)
             self.allLs[a]=List
