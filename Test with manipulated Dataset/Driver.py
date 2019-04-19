@@ -16,6 +16,7 @@ MAIN_LIST = {}
 
 dataset.set_index('Roll No',inplace = True)
 subjects = list(dataset.columns)
+
 #subjects = ['Data Structure & Algorithm','Design & Analysis of Algorithm','Object Oriented Programming']
 subjects_to_be_analysed = []
 
@@ -35,10 +36,17 @@ AprioriObject = apriori(min = 15,transactions = MAIN_LIST,productlist = subjects
 
 PATTERNS = ["Good marks in ","Average marks in ","Poor marks in "]
 
+Chronological_order = {}
+
+count = 0
+for subject in subjects:
+    Chronological_order[subject] = count
+    count+=1
+
 relations = {}
 
 for items in AprioriObject.finalRules:
-    if(items == 3):
+    if(items == 2 or items == 3):
         for rules in AprioriObject.finalRules[items]:
             #print(rules)
             main_stuff = rules
@@ -64,15 +72,17 @@ for items in AprioriObject.finalRules:
             subjects_in_this_rule = tuple(sorted([subject for subject in left_subjects]+[subject for subject in right_subjects]))
 
             #print(subjects_in_this_rule)
-            if(float(percentage[:-1])>90):
-                if(subjects_in_this_rule not in relations):
-                    #print("The relations between :",subjects_in_this_rule," are --- ")
-                    relations[subjects_in_this_rule] = [main_stuff]
-                else:
-                    relations[subjects_in_this_rule].append(main_stuff)
+            if all(Chronological_order[subject_in_left[1:-1]] < Chronological_order[subject_in_right[1:-1]] for subject_in_left in left_subjects for subject_in_right in right_subjects ):
+                if(float(percentage[:-1])>75):
+                    if(subjects_in_this_rule not in relations):
+                        relations[subjects_in_this_rule] = [main_stuff]
+                    else:
+                        relations[subjects_in_this_rule].append(main_stuff)
+
 
 for subjects in relations:
-    if(len(relations[subjects])>2):
+    if(len(relations[subjects])>0):
+        print('Relationship between: ',subjects)
         for items in relations[subjects]:
             print(items)
         print()
