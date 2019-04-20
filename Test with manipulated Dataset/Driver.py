@@ -49,7 +49,7 @@ for index in dataset.index:
     rules_len : The maximum length each rule can have. This argument simply halps to save time as longer rules are not evaluated which are
                 necessarily not useful'''
 
-AprioriObject = apriori(min = 15,transactions = MAIN_LIST,productlist = subjects_to_be_analysed,rulesMin = 0.1,rules_len = 3)
+AprioriObject = apriori(min = 15,transactions = MAIN_LIST,productlist = subjects_to_be_analysed,rulesMin = 0.1,rules_len = 4)
 
 '''A list containg the texts which are useful for searching in a text for filtering purposes'''
 
@@ -73,7 +73,7 @@ relations = {}
     3---> If True then we add that rule as a VALUE to the dictionary relations under the KEY which is made up of a sorted tuple of the subjects present in the rule'''
 
 for items in AprioriObject.finalRules:
-    if(items == 2 or items == 3):
+    if(items != 1):
         for rules in AprioriObject.finalRules[items]:
             main_stuff = rules
             rules,percentage = rules.split(": ")
@@ -107,7 +107,7 @@ for items in AprioriObject.finalRules:
 
 '''We loop over relations and print the rules with proper heading'''
 for subjects in relations:
-    if(len(relations[subjects])>0):
+    if(len(relations[subjects])>1):
         print('Relationship between: ',subjects)
         for items in relations[subjects]:
             print(items)
