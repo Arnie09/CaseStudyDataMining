@@ -49,7 +49,7 @@ for index in dataset.index:
     rules_len : The maximum length each rule can have. This argument simply halps to save time as longer rules are not evaluated which are
                 necessarily not useful'''
 
-AprioriObject = apriori(min = 15,transactions = MAIN_LIST,productlist = subjects_to_be_analysed,rulesMin = 0.1,rules_len = 4)
+AprioriObject = apriori(min = 32,transactions = MAIN_LIST,productlist = subjects_to_be_analysed,rulesMin = 0.9,rules_len = 4)
 
 '''A list containg the texts which are useful for searching in a text for filtering purposes'''
 
@@ -75,8 +75,10 @@ relations = {}
 for items in AprioriObject.finalRules:
     if(items != 1):
         for rules in AprioriObject.finalRules[items]:
-            main_stuff = rules
+
             rules,percentage = rules.split(": ")
+            percentage = str(round(float(percentage[:-1]),2))
+            main_stuff=rules+": "+percentage
             left_part,right_part = rules.split('=>')
             left_part = left_part[1:-1]
             right_part = right_part[1:-1]
@@ -97,7 +99,7 @@ for items in AprioriObject.finalRules:
 
             subjects_in_this_rule = tuple(sorted([subject for subject in left_subjects]+[subject for subject in right_subjects]))
 
-            if all(Chronological_order[subject_in_left[1:-1]] < Chronological_order[subject_in_right[1:-1]] for subject_in_left in left_subjects for subject_in_right in right_subjects ):
+            if all(Chronological_order[subject_in_left[1:-1]] < Chronological_order[subject_in_right[1:-1]] for subject_in_left in left_subjects for subject_in_right in right_subjects ) and len(left_subjects)>=len(right_subjects):
                 if(float(percentage[:-1])>75):
                     if(subjects_in_this_rule not in relations):
                         relations[subjects_in_this_rule] = [main_stuff]
