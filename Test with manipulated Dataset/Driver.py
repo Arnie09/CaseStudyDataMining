@@ -106,9 +106,12 @@ for items in AprioriObject.finalRules:
 
 
 '''We loop over relations and print the rules with proper heading'''
+number_of_associations = 0
 for subjects in relations:
     if(len(relations[subjects])>1):
+        number_of_associations+=1
         print('Relationship between: ',subjects)
         for items in relations[subjects]:
             print(items)
         print()
+print("The total number of associations: ",number_of_associations)
