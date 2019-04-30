@@ -22,12 +22,12 @@ for subjects in SUBJECTS:
         marks = dataFrame.loc[students][subjects]
         String = ""
         if(marks>=max - diff):
-            String = "Good marks in "
+            String = "Good"
         elif(marks>= min+diff and marks<max-diff):
-            String = "Average marks in "
+            String = "Average"
         else:
-            String = "Poor marks in "
-        scores = (String+subjects)
+            String = "Poor"
+        scores = String
         MAIN_LIST[students].append(scores)
 
 df = pd.DataFrame.from_dict(MAIN_LIST,orient = "index",columns = SUBJECTS)
