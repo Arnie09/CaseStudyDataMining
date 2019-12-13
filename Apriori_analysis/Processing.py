@@ -3,7 +3,7 @@ import os
 import sys
 import openpyxl
 
-dataFrame = pd.read_excel((os.path.join(sys.path[0],'ManipulatedDataset2.xlsx')))
+dataFrame = pd.read_excel((os.path.join(sys.path[0],'RawDataset.xlsx')))
 dataFrame.set_index('RollNo.',inplace  = True)
 MAIN_LIST={}
 SUBJECTS = list(dataFrame.columns)
